@@ -1,0 +1,19 @@
+
+.seances_hall {
+  margin: 35px;
+}
+
+.seances_title {
+  font-weight: 500;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+}
+
+.seances_timeline {
+  position: relative;
+  outline: 1px solid #848484;
+  padding: 10px 0;
+  height: 40px;
+  box-sizing: content-box;
+  width: calc(1440px * 0.5);
+}

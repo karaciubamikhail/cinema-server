@@ -1,0 +1,23 @@
+.header {
+  padding: 35px 42px 35px 104px;
+}
+
+.header {
+  color: #FFFFFF;
+  text-transform: uppercase;
+}
+
+.header .header__title {
+  margin: 0;
+  font-weight: 900;
+  font-size: 3.4rem;
+}
+
+.header .header__title span {
+  font-weight: 100;
+}
+
+.header .header__subtitle {
+  font-size: 1rem;
+  letter-spacing: 0.46em;
+}

@@ -1,0 +1,18 @@
+.TextParagraph {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #000000;
+  margin-bottom: 12px;
+}
+
+.TextParagraph.error {
+  color: #800000;
+}
+
+.TextParagraph:not(:first-of-type) {
+  margin-top: 35px;
+}
+
+.text_center {
+  text-align: center;
+}

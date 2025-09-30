@@ -1,0 +1,7 @@
+[class*="ConfigHallsScheme"] .conf-step__row {
+  font-size: 0;
+}
+
+[class*="ConfigHallsScheme"] [class*="hall_wrapper"] .conf-step__row+.conf-step__row {
+  margin-top: 10px;
+}

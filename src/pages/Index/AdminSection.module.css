@@ -1,0 +1,130 @@
+.text_center {
+  text-align: center;
+}
+
+.section {
+  position: relative;
+  background-color: rgba(234, 233, 235, 0.95);
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  left: 62px;
+  margin-left: -1px;
+  top: 0;
+  bottom: 0;
+  display: block;
+  width: 2px;
+  background-color: #BC95D6;
+}
+
+.header {
+  cursor: pointer;
+}
+
+.wrapper,
+.header {
+  padding: 35px 42px 35px 104px;
+}
+
+.header_opened+.wrapper {
+  display: block;
+}
+
+.header_closed+.wrapper {
+  display: none;
+}
+
+.header_closed::after {
+  transform: rotate(-90deg);
+}
+
+.header {
+  position: relative;
+  box-sizing: border-box;
+  background-color: #63536C;
+  color: #FFFFFF;
+  transition-property: all;
+  transition-duration: .6s;
+  transition-timing-function: ease;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  left: 62px;
+  margin-left: -1px;
+  top: 0;
+  bottom: 0;
+  display: block;
+  width: 2px;
+  background-color: #BC95D6;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  top: calc(50% - 8px);
+  display: block;
+  right: 42px;
+  width: 24px;
+  height: 16px;
+  background-image: url("../../img/switch.png");
+  background-size: 24px 16px;
+}
+
+.header:hover,
+.header:focus {
+  background-color: #89639e;
+}
+
+.header .title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  counter-increment: num;
+  transition-property: all;
+  transition-duration: .6s;
+  transition-timing-function: ease;
+}
+
+.header .title::before {
+  content: counter(num);
+  position: absolute;
+  display: block;
+  left: 62px;
+  top: 50%;
+  margin-left: -22px;
+  margin-top: -22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 5px solid #BC95D6;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  color: #63536C;
+  font-weight: 900;
+  font-size: 2.8rem;
+  text-align: center;
+  letter-spacing: normal;
+}
+
+.header:hover .title {
+  letter-spacing: 2px;
+  transition-property: all;
+  transition-duration: .6s;
+  transition-timing-function: ease;
+}
+
+.header:hover .title::before {
+  letter-spacing: normal;
+}
+
+.section:first-of-type .header::before {
+  top: 50%;
+}
+
+.section:last-of-type .header::before {
+  bottom: 50%;
+}

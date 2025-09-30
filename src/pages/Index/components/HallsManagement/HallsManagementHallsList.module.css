@@ -1,0 +1,7 @@
+.list {
+  list-style: none;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin: 14px 0 5px 25px;
+}

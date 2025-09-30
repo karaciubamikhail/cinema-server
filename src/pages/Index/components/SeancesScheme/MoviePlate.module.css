@@ -1,0 +1,120 @@
+[class*="MoviesList"] .movie {
+  position: relative;
+  width: calc((100% - 30px) / 3);
+  min-height: 52px;
+  padding: 8px 8px 8px 48px;
+  background: #FFEB85;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* my */
+[class*="MoviesList"] .movie:hover {
+  border-color: #89639e;
+  outline: #89639e solid 1px;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(3n + 2) {
+  margin: 0 15px;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(n + 4) {
+  margin-top: 15px;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(1) {
+  background-color: #caff85;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(2) {
+  background-color: #85ff89;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(3) {
+  background-color: #85ffd3;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(4) {
+  background-color: #85e2ff;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(5) {
+  background-color: #8599ff;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(6) {
+  background-color: #ba85ff;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(7) {
+  background-color: #ff85fb;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(8) {
+  background-color: #ff85b1;
+}
+
+[class*="MoviesList"] .movie:nth-of-type(9) {
+  background-color: #ffa285;
+}
+
+[class*="MoviesList"] .movie_poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 50px;
+}
+
+[class*="MoviesList"] .movie_title {
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
+[class*="MoviesList"] .movie_duration {
+  font-size: 1.4rem;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.button {
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.24), 0px 0px 3px rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+  border: none;
+  background-color: #FFFFFF;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 0.75rem;
+  transition-property: background-color;
+  transition-duration: .5s;
+  transition-timing-function: ease;
+}
+
+.button:hover,
+.button:focus {
+  background-color: #EEEAF1;
+  outline: none;
+}
+
+.button:active {
+  position: relative;
+  top: 2px;
+  background-color: #63536C;
+  color: #FFFFFF;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+.button+.button {
+  margin-left: 5px;
+}
+
+.button.button_regular {
+  color: #63536C;
+  padding: 6px;
+  margin-top: 6px;
+}
+
+.button.button_regular.button_disabled {
+  background-color: #a4acac;
+  color: #ffffff82;
+}

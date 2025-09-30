@@ -1,0 +1,46 @@
+.legend {
+  color: #848484;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+}
+
+.legend .chair:not(:first-of-type) {
+  margin-left: 20px;
+}
+
+.hint {
+  margin-top: 10px;
+}
+
+.label {
+  display: inline-block;
+  font-size: 1.2rem;
+  color: #848484;
+}
+
+.chair {
+  display: inline-block;
+  vertical-align: middle;
+  width: 26px;
+  height: 26px;
+  border-width: 2px;
+  border-style: solid;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.chair_standart {
+  border-color: #393939;
+  background-color: #C4C4C4;
+}
+
+.chair_vip {
+  border-color: #0a828a;
+  background-color: #b0d6d8;
+  background-image: url("../../../../img/green-pattern.png");
+  background-repeat: repeat;
+}
+
+.chair_disabled {
+  border-color: #C4C4C4;
+}

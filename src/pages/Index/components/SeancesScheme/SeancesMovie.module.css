@@ -1,0 +1,39 @@
+.seances_movie {
+  position: absolute;
+  height: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  padding: 10px 2px 10px 10px;
+  cursor: pointer; 
+}
+
+.seances_movie .seances_movie_title {
+  overflow: hidden;
+  line-height: 10px;
+  height: 100%;
+}
+
+.seances_movie .seances_movie_start {
+  position: absolute;
+  bottom: -33px;
+  left: -14px;
+  color: #848484;
+  font-size: 1.2rem;
+}
+
+.seances_movie::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 1px;
+  height: 5px;
+  bottom: -17px;
+  left: 0;
+  background-color: #848484;
+}
+
+/* my */
+.seances_movie:hover {
+  border-color: #89639e;
+  outline: #89639e solid 1px; 
+}

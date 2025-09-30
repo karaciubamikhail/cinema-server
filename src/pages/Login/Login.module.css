@@ -1,0 +1,127 @@
+.button {
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.24), 0px 0px 3px rgba(0, 0, 0, 0.12);
+  border-radius: 3px;
+  border: none;
+  background-color: #FFFFFF;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.4rem;
+  transition-property: background-color;
+  transition-duration: .5s;
+  transition-timing-function: ease;
+}
+
+.button:hover,
+.button:focus {
+  background-color: #EEEAF1;
+  outline: none;
+  cursor: pointer;
+}
+
+.button:active {
+  position: relative;
+  top: 2px;
+  background-color: #63536C;
+  color: #FFFFFF;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+.button+.button,
+.button+.login__button {
+  margin-left: 12px;
+}
+
+.button.button_accent {
+  color: #FFFFFF;
+  background-color: #16A6AF;
+  padding: 12px 32px;
+  margin-top: 17px;
+}
+
+.button.button_accent:hover,
+.button.button_accent:focus {
+  background-color: #2FC9D2;
+  outline: none;
+}
+
+.button.button_accent:active {
+  position: relative;
+  top: 2px;
+  background-color: #146C72;
+  color: #FFFFFF;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+.button.button_accent.button_disabled,
+.button.button_accent.button_disabled:hover {
+  background-color: #a4acac;
+  color: #ffffff82;
+}
+
+.label {
+  width: 100%;
+  margin-bottom: 0.8rem;
+  display: inline-block;
+  font-size: 1.2rem;
+  color: #848484;
+}
+
+.label:last-of-type {
+  margin-bottom: 0;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  margin-top: 1px;
+  padding: 8px;
+  font-size: 1.6rem;
+  color: #000000;
+  border: 1px solid #b7b7b7;
+}
+
+.input:focus {
+  outline: 1px #CF87FF solid;
+  outline-offset: -1px;
+}
+
+
+.login {
+  width: 480px;
+  margin: 0 auto;
+  position: relative;
+  background-color: rgba(234, 233, 235, 0.95);
+}
+
+.wrapper {
+  padding: 35px 104px;
+}
+
+.header {
+  position: relative;
+  box-sizing: border-box;
+  padding: 16px 104px;
+  background-color: #63536C;
+  color: #FFFFFF;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.TextParagraph {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #000000;
+  margin-bottom: 12px;
+}
+
+.TextParagraph.error {
+  color: #800000;
+}
+
+.text_center {
+  text-align: center;
+}
