@@ -57,8 +57,14 @@ const configSlice = createSlice({
     getHallsRequestSuccess(state, action) {
       state.loading = false;
       state.halls = action.payload;
-      state.activeHallId.configHalls = action.payload[0]?.hallId;
-      state.activeHallId.configPrices = action.payload[0]?.hallId;
+
+    if (!state.activeHallId.configHalls) {
+    state.activeHallId.configHalls = action.payload[0]?.hallId;
+    }
+
+    if (!state.activeHallId.configPrices) {
+    state.activeHallId.configPrices = action.payload[0]?.hallId;
+    }
     },
     getHallsRequestFailed(state, action) {
       state.loading = false;

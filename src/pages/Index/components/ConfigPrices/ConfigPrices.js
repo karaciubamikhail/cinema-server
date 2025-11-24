@@ -32,11 +32,15 @@ export default function ConfigPrices({ ...props }) {
     (hall) => activeHallId?.configPrices === hall?.hallId
   );
   const hallHasVipSeats = seats?.some((seat) => seat.seatType === '2');
-  const isOldPrices =
-    !activeHall?.hallPriceStandard && !activeHall?.hallPriceVip
-      ? true
-      : hallPrices?.standart === activeHall?.hallPriceStandard &&
-        (hallHasVipSeats ? hallPrices?.vip === activeHall?.hallPriceVip : true);
+const hasInitialPrices =
+  activeHall?.hallPriceStandard != null ||
+  activeHall?.hallPriceVip != null;
+
+const isOldPrices = hasInitialPrices
+  ? hallPrices.standart === activeHall.hallPriceStandard &&
+    (hallHasVipSeats ? hallPrices.vip === activeHall.hallPriceVip : true)
+  : false; 
+
   const isDisabledCancel = loading || isOldPrices;
   const isDisabledSubmit =
     loading ||
