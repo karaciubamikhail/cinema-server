@@ -33,12 +33,14 @@ import {
   postTokenCreateRequestSuccess,
   postTokenCreateRequestFailed,
 } from '../store/SliceConfig';
+
 import {
   setActiveModal,
   setModalRequest,
   setModalRequestSuccess,
   setModalRequestFailed,
 } from '../store/SliceModal';
+
 import {
   mapToInternalMovies,
   mapToInternalHalls,
@@ -51,34 +53,30 @@ import {
 
 const url = process.env.REACT_APP_API_URL_DEV;
 
+/**
+ * Вспомогательная функция заголовков для fetch
+ */
+const getAuthHeaders = (token) => ({
+  'Content-Type': 'application/json;charset=utf-8',
+  Accept: 'application/json',
+  ...(token ? { Authorization: 'Bearer ' + token } : {}),
+});
+
+/**
+ * Инициализация всех сущностей
+ */
 export const fetchGetInitEntities = () => (dispatch, getState) => {
   dispatch(fetchGetStartSales()).then(() => {
-    const {
-      config: {
-        error: { global },
-      },
-    } = getState();
+    const { config: { error: { global } } } = getState();
     if (!global)
       dispatch(fetchGetHalls()).then(() => {
-        const {
-          config: {
-            error: { global },
-          },
-        } = getState();
+        const { config: { error: { global } } } = getState();
         if (!global)
           dispatch(fetchGetSeats()).then(() => {
-            const {
-              config: {
-                error: { global },
-              },
-            } = getState();
+            const { config: { error: { global } } } = getState();
             if (!global)
               dispatch(fetchGetMovies()).then(() => {
-                const {
-                  config: {
-                    error: { global },
-                  },
-                } = getState();
+                const { config: { error: { global } } } = getState();
                 if (!global) dispatch(fetchGetSeances());
               });
           });
@@ -87,142 +85,65 @@ export const fetchGetInitEntities = () => (dispatch, getState) => {
 };
 
 /**
- * Загрузка состояния начала продаж
+ * Получение состояния начала продаж
  */
 export const fetchGetStartSales = () => (dispatch, getState) => {
   dispatch(getStartSalesRequest());
-  const {
-    config: { token },
-  } = getState();
-  return fetch(`${url}/sales`, {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  })
-    .then((response) => {
-      if (response.status < 200 || response.status >= 300) {
-        throw new Error();
-      }
-      return response.json();
-    })
-    .then((result) => {
-      dispatch(getStartSalesRequestSuccess(result[0]?.start_sales));
-    })
-    .catch((e) => {
-      dispatch(getStartSalesRequestFailed(e?.message));
-    });
+  const { config: { token } } = getState();
+  return fetch(`${url}/sales`, { headers: getAuthHeaders(token) })
+    .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+    .then((data) => dispatch(getStartSalesRequestSuccess(data[0]?.start_sales)))
+    .catch((e) => dispatch(getStartSalesRequestFailed(e?.message)));
 };
 
 /**
- * Загрузка списка фильмов
+ * Получение фильмов
  */
 export const fetchGetMovies = () => (dispatch, getState) => {
   dispatch(getMoviesRequest());
-  const {
-    config: { token },
-  } = getState();
-  return fetch(`${url}/movies`, {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  })
-    .then((response) => {
-      if (response.status < 200 || response.status >= 300) {
-        throw new Error();
-      }
-      return response.json();
+  const { config: { token } } = getState();
+  return fetch(`${url}/movies`, { headers: getAuthHeaders(token) })
+    .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+    .then((data) => {
+      dispatch(getMoviesRequestSuccess(mapToInternalMovies(data)));
     })
-    .then((result) => {
-      const intMovies = mapToInternalMovies(result);
-      dispatch(getMoviesRequestSuccess(intMovies));
-    })
-    .catch((e) => {
-      dispatch(getMoviesRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(getMoviesRequestFailed(e.message)));
 };
 
 /**
- * Загрузка списка залов
+ * Получение залов
  */
 export const fetchGetHalls = () => (dispatch, getState) => {
   dispatch(getHallsRequest());
-  const {
-    config: { token },
-  } = getState();
-  return fetch(`${url}/halls`, {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  })
-    .then((response) => {
-      if (response.status < 200 || response.status >= 300) {
-        throw new Error();
-      }
-      return response.json();
-    })
-    .then((result) => {
-      const intHalls = mapToInternalHalls(result);
-      dispatch(getHallsRequestSuccess(intHalls));
-    })
-    .catch((e) => {
-      dispatch(getHallsRequestFailed(e.message));
-    });
+  const { config: { token } } = getState();
+  return fetch(`${url}/halls`, { headers: getAuthHeaders(token) })
+    .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+    .then((data) => dispatch(getHallsRequestSuccess(mapToInternalHalls(data))))
+    .catch((e) => dispatch(getHallsRequestFailed(e.message)));
 };
 
 /**
- * Загрузка мест в зале
+ * Получение мест
  */
 export const fetchGetSeats = () => (dispatch, getState) => {
   dispatch(getSeatsRequest());
-  const {
-    config: { token },
-  } = getState();
-  return fetch(`${url}/seats`, {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  })
-    .then((response) => {
-      if (response.status < 200 || response.status >= 300) {
-        throw new Error();
-      }
-      return response.json();
-    })
-    .then((result) => {
-      const intSeats = mapToInternalSeats(result);
-      dispatch(getSeatsRequestSuccess(intSeats));
-    })
-    .catch((e) => {
-      dispatch(getSeatsRequestFailed(e.message));
-    });
+  const { config: { token } } = getState();
+  return fetch(`${url}/seats`, { headers: getAuthHeaders(token) })
+    .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+    .then((data) => dispatch(getSeatsRequestSuccess(mapToInternalSeats(data))))
+    .catch((e) => dispatch(getSeatsRequestFailed(e.message)));
 };
 
 /**
- * Загрузка списка сеансов
+ * Получение сеансов
  */
 export const fetchGetSeances = () => (dispatch, getState) => {
   dispatch(getSeancesRequest());
-  const {
-    config: { token },
-  } = getState();
-  return fetch(`${url}/seances`, {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  })
-    .then((response) => {
-      if (response.status < 200 || response.status >= 300) {
-        throw new Error();
-      }
-      return response.json();
-    })
-    .then((result) => {
-      const intSeances = mapToInternalSeances(result);
-      dispatch(getSeancesRequestSuccess(intSeances));
-    })
-    .catch((e) => {
-      dispatch(getSeancesRequestFailed(e.message));
-    });
+  const { config: { token } } = getState();
+  return fetch(`${url}/seances`, { headers: getAuthHeaders(token) })
+    .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+    .then((data) => dispatch(getSeancesRequestSuccess(mapToInternalSeances(data))))
+    .catch((e) => dispatch(getSeancesRequestFailed(e.message)));
 };
 
 /**
@@ -230,30 +151,19 @@ export const fetchGetSeances = () => (dispatch, getState) => {
  */
 export const fetchPostHallCreate = (hallName) => (dispatch, getState) => {
   dispatch(setModalRequest());
-  const {
-    config: { token },
-  } = getState();
+  const { config: { token } } = getState();
   return fetch(`${url}/halls`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token,
-    },
-    body: JSON.stringify({
-      name: hallName,
-    }),
+    headers: getAuthHeaders(token),
+    body: JSON.stringify({ name: hallName }),
   })
-    .then((result) => {
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error();
-      }
+    .then((res) => (res.ok ? res : Promise.reject(res.statusText)))
+    .then(() => {
       dispatch(setModalRequestSuccess());
       dispatch(setActiveModal(''));
       dispatch(fetchGetHalls());
     })
-    .catch((e) => {
-      dispatch(setModalRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(setModalRequestFailed(e.message)));
 };
 
 /**
@@ -262,149 +172,95 @@ export const fetchPostHallCreate = (hallName) => (dispatch, getState) => {
 export const fetchPostHallDelete = (hallId) => (dispatch, getState) => {
   if (!hallId) return;
   dispatch(setModalRequest());
-  const {
-    config: { token },
-  } = getState();
+  const { config: { token } } = getState();
   return fetch(`${url}/halls/${hallId}`, {
     method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token,
-    },
-    body: JSON.stringify({
-      hallId,
-    }),
+    headers: getAuthHeaders(token),
   })
-    .then((result) => {
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error();
-      }
+    .then((res) => (res.ok ? res : Promise.reject(res.statusText)))
+    .then(() => {
       dispatch(setModalRequestSuccess());
       dispatch(setActiveModal(''));
       dispatch(fetchGetHalls());
     })
-    .catch((e) => {
-      dispatch(setModalRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(setModalRequestFailed(e.message)));
 };
 
 /**
- * Конфигурация зала
+ * Изменение размеров зала
  */
-export const fetchPostHallSize = (params) => (dispatch, getState) => {
+export const fetchPostHallSize = ({ activeHallId, hallSize }) => (dispatch, getState) => {
   dispatch(postHallSizeRequest());
-  const { activeHallId, hallSize } = params;
-  const {
-    config: { token },
-  } = getState();
+  const { config: { token } } = getState();
   return fetch(`${url}/halls/${activeHallId}`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token,
-    },
-    body: JSON.stringify({
-      total_rows: hallSize.rows,
-      total_cols: hallSize.cols,
-    }),
+    headers: getAuthHeaders(token),
+    body: JSON.stringify({ total_rows: hallSize.rows, total_cols: hallSize.cols }),
   })
-    .then((result) => {
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error();
-      }
-      dispatch(fetchGetHalls()).then(dispatch(postHallSizeRequestSuccess()));
+    .then((res) => (res.ok ? res : Promise.reject(res.statusText)))
+    .then(() => {
+      dispatch(fetchGetHalls());
+      dispatch(postHallSizeRequestSuccess());
     })
-    .catch((e) => {
-      dispatch(postHallSizeRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(postHallSizeRequestFailed(e.message)));
 };
 
-export const fetchPostSeats = (params) => (dispatch, getState) => {
+/**
+ * Изменение мест
+ */
+export const fetchPostSeats = ({ activeHallId, seatsType }) => (dispatch, getState) => {
   dispatch(postSeatsRequest());
-  const { activeHallId, seatsType } = params;
-  const {
-    config: { token },
-  } = getState();
-  const extSeats = mapToExternalSeats(seatsType);
+  const { config: { token } } = getState();
   return fetch(`${url}/seats`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token,
-    },
-    body: JSON.stringify({
-      seats: extSeats,
-      hallId: activeHallId,
-    }),
+    headers: getAuthHeaders(token),
+    body: JSON.stringify({ hallId: activeHallId, seats: mapToExternalSeats(seatsType) }),
   })
-    .then((result) => {
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error();
-      }
-      dispatch(fetchGetSeats()).then(dispatch(postSeatsRequestSuccess()));
+    .then((res) => (res.ok ? res : Promise.reject(res.statusText)))
+    .then(() => {
+      dispatch(fetchGetSeats());
+      dispatch(postSeatsRequestSuccess());
     })
-    .catch((e) => {
-      dispatch(postSeatsRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(postSeatsRequestFailed(e.message)));
 };
 
 /**
- * Конфигурация цен зала
+ * Настройка цен
  */
-export const fetchPostHallPrices = (params) => (dispatch, getState) => {
+export const fetchPostHallPrices = ({ activeHallId, standart, vip }) => (dispatch, getState) => {
   dispatch(postPricesRequest());
-  const { activeHallId, standart, vip } = params;
-  const {
-    config: { token },
-  } = getState();
+  const { config: { token } } = getState();
   return fetch(`${url}/halls/${activeHallId}`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token,
-    },
-    body: JSON.stringify({
-      price_standard: standart,
-      price_vip: vip,
-    }),
+    headers: getAuthHeaders(token),
+    body: JSON.stringify({ price_standard: standart, price_vip: vip }),
   })
-    .then((result) => {
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error();
-      }
-      dispatch(fetchGetHalls()).then(dispatch(postPricesRequestSuccess()));
+    .then((res) => (res.ok ? res : Promise.reject(res.statusText)))
+    .then(() => {
+      dispatch(fetchGetHalls());
+      dispatch(postPricesRequestSuccess());
     })
-    .catch((e) => {
-      dispatch(postPricesRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(postPricesRequestFailed(e.message)));
 };
 
 /**
- * Создание/добавление фильма
+ * Создание фильма
  */
 export const fetchPostMovieCreate = (params) => (dispatch, getState) => {
   dispatch(setModalRequest());
-  const {
-    config: { token },
-  } = getState();
+  const { config: { token } } = getState();
   return fetch(`${url}/movies`, {
     method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
+    headers: getAuthHeaders(token),
     body: params,
   })
-    .then((result) => {
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error();
-      }
+    .then((res) => (res.ok ? res : Promise.reject(res.statusText)))
+    .then(() => {
       dispatch(setModalRequestSuccess());
       dispatch(setActiveModal(''));
       dispatch(fetchGetMovies());
     })
-    .catch((e) => {
-      dispatch(setModalRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(setModalRequestFailed(e.message)));
 };
 
 /**
@@ -413,142 +269,93 @@ export const fetchPostMovieCreate = (params) => (dispatch, getState) => {
 export const fetchPostMovieDelete = (movieId) => (dispatch, getState) => {
   if (!movieId) return;
   dispatch(setModalRequest());
-  const {
-    config: { token },
-  } = getState();
+  const { config: { token } } = getState();
   return fetch(`${url}/movies/${movieId}`, {
     method: 'DELETE',
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
+    headers: getAuthHeaders(token),
   })
-    .then((result) => {
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error();
-      }
+    .then((res) => (res.ok ? res : Promise.reject(res.statusText)))
+    .then(() => {
       dispatch(setModalRequestSuccess());
       dispatch(setActiveModal(''));
       dispatch(fetchGetMovies());
     })
-    .catch((e) => {
-      dispatch(setModalRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(setModalRequestFailed(e.message)));
 };
 
 /**
  * Редактирование фильма
  */
-export const fetchPostMovieEdit = (params) => (dispatch, getState) => {
-  if (!params?.activeMovieId) return;
+export const fetchPostMovieEdit = ({ activeMovieId, formData }) => (dispatch, getState) => {
+  if (!activeMovieId) return;
   dispatch(setModalRequest());
-  const {
-    config: { token },
-  } = getState();
-  return fetch(`${url}/movies/${params?.activeMovieId}`, {
+  const { config: { token } } = getState();
+  return fetch(`${url}/movies/${activeMovieId}`, {
     method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-    body: params?.formData,
+    headers: getAuthHeaders(token),
+    body: formData,
   })
-    .then((result) => {
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error();
-      }
+    .then((res) => (res.ok ? res : Promise.reject(res.statusText)))
+    .then(() => {
       dispatch(setModalRequestSuccess());
       dispatch(setActiveModal(''));
       dispatch(fetchGetMovies());
     })
-    .catch((e) => {
-      dispatch(setModalRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(setModalRequestFailed(e.message)));
 };
 
 /**
- * Создание сетки сеансов
+ * Создание сеансов
  */
 export const fetchPostSeances = () => (dispatch, getState) => {
-  const {
-    view: { seancesCreated, seancesRemoved },
-    config: { token },
-  } = getState();
+  const { view: { seancesCreated, seancesRemoved }, config: { token } } = getState();
   dispatch(postSeancesRequest());
-  const extSeancesRemoved = mapToExternalRemovedSeances(seancesRemoved);
-  const extSeancesCreated = mapToExternalCreatedSeances(seancesCreated);
   return fetch(`${url}/seances`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token,
-    },
+    headers: getAuthHeaders(token),
     body: JSON.stringify({
-      remove_seances: extSeancesRemoved,
-      create_seances: extSeancesCreated,
+      remove_seances: mapToExternalRemovedSeances(seancesRemoved),
+      create_seances: mapToExternalCreatedSeances(seancesCreated),
     }),
   })
-    .then((result) => {
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error();
-      }
-      dispatch(fetchGetSeances()).then(dispatch(postSeancesRequestSuccess()));
+    .then((res) => (res.ok ? res : Promise.reject(res.statusText)))
+    .then(() => {
+      dispatch(fetchGetSeances());
+      dispatch(postSeancesRequestSuccess());
     })
-    .catch((e) => {
-      dispatch(postSeancesRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(postSeancesRequestFailed(e.message)));
 };
 
 /**
  * Открыть/закрыть продажи
  */
 export const fetchPostStartSales = () => (dispatch, getState) => {
-  const {
-    config: { token, startSales },
-  } = getState();
+  const { config: { token, startSales } } = getState();
   dispatch(postStartSalesRequest());
   return fetch(`${url}/sales/1`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token,
-    },
-    body: JSON.stringify({
-      start_sales: !startSales,
-    }),
+    headers: getAuthHeaders(token),
+    body: JSON.stringify({ start_sales: !startSales }),
   })
-    .then((result) => {
-      if (result.status < 200 || result.status >= 300) {
-        throw new Error();
-      }
-      dispatch(fetchGetStartSales()).then(
-        dispatch(postStartSalesRequestSuccess())
-      );
+    .then((res) => (res.ok ? res : Promise.reject(res.statusText)))
+    .then(() => {
+      dispatch(fetchGetStartSales());
+      dispatch(postStartSalesRequestSuccess());
     })
-    .catch((e) => {
-      dispatch(postStartSalesRequestFailed(e.message));
-    });
+    .catch((e) => dispatch(postStartSalesRequestFailed(e.message)));
 };
 
+/**
+ * Авторизация (получение токена)
+ */
 export const fetchPostTokenCreate = (loginParams) => (dispatch) => {
   dispatch(postTokenCreateRequest());
   return fetch(`${url}/tokens/create`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-    },
-    body: JSON.stringify({
-      ...loginParams,
-    }),
+    headers: getAuthHeaders(),
+    body: JSON.stringify(loginParams),
   })
-    .then((response) => {
-      if (response.status < 200 || response.status >= 300) {
-        throw new Error();
-      }
-      return response.json();
-    })
-    .then((result) => {
-      dispatch(postTokenCreateRequestSuccess(result.token));
-    })
-    .catch((e) => {
-      dispatch(postTokenCreateRequestFailed(e.message));
-    });
+    .then((res) => (res.ok ? res.json() : Promise.reject(res.statusText)))
+    .then((data) => dispatch(postTokenCreateRequestSuccess(data.token)))
+    .catch((e) => dispatch(postTokenCreateRequestFailed(e.message)));
 };
