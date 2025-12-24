@@ -57,6 +57,7 @@ const isOldPrices = hasInitialPrices
     const price = parseInt(value.trim());
     if (
       !price ||
+      price <= 0 || 
       isNaN(price) ||
       hallPrices[name] === price ||
       loading ||

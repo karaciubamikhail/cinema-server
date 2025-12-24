@@ -222,9 +222,6 @@ const getHallsNotReadyArr = (halls, seats, seances) => {
   halls.forEach((hall) => {
     const hallSeats = seats.filter((seat) => seat?.seatHallId === hall?.hallId);
     const hallHasVipSeats = hallSeats?.some((seat) => seat.seatType === '2');
-    const hallSeances = seances.filter(
-      (seance) => seance?.hallId === hall?.hallId
-    );
 
     if (
       !(
@@ -232,8 +229,7 @@ const getHallsNotReadyArr = (halls, seats, seances) => {
         hall?.hallCols &&
         hall?.hallPriceStandard &&
         (hallHasVipSeats ? (hall?.hallPriceVip ? true : false) : true) &&
-        hallSeats.length &&
-        hallSeances.length
+        hallSeats.length
       )
     )
       hallsReadyCheckedArr.push(hall?.hallName);

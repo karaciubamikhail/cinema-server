@@ -27,7 +27,6 @@ export default function StartSales({ className, ...props }) {
   const isDisabledSubmit =
     !movies?.length ||
     !halls?.length ||
-    !seances?.length ||
     hallsNotReadyArr?.length ||
     loading ||
     initError ||

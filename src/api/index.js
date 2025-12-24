@@ -251,7 +251,9 @@ export const fetchPostMovieCreate = (params) => (dispatch, getState) => {
   const { config: { token } } = getState();
   return fetch(`${url}/movies`, {
     method: 'POST',
-    headers: getAuthHeaders(token),
+    headers: token
+    ? { Authorization: 'Bearer ' + token }
+    : {},
     body: params,
   })
     .then((res) => (res.ok ? res : Promise.reject(res.statusText)))

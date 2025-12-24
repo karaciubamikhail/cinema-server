@@ -65,7 +65,7 @@ export default function ConfigHalls() {
   const hallSizeHandler = ({ target }) => {
     const { name, value } = target;
     const size = parseInt(value.trim());
-    if (!size || isNaN(size) || startSales || loading) return;
+    if (!size || isNaN(size) || size <= 0 || startSales || loading) return;
     if (hallSize[name] === size) return;
     setHallSize((prevSize) => {
       return { ...prevSize, [name]: size };
